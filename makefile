@@ -1,14 +1,18 @@
-srcDir     := src
-binDir     := bin
-testDir    := Test
-cktDir     := sample_circuits
-reportDir  := reports
-PROG       := atpg
-goldenProg := golden_atpg
+srcDir        := src
+binDir        := bin
+testDir       := Test
+cktDir        := sample_circuits
+reportDir     := reports
+PROG          := atpg
+goldenProgram := golden_atpg
 
 circuits := $(patsubst ${cktDir}/%.ckt, %, $(wildcard ${cktDir}/*.ckt) )
 
-.PHONY: all ${srcDir}/${PROG} clean test tags
+reportProgram := reportStatistic.perl
+
+-include reportCircuits.txt
+
+.PHONY: all ${srcDir}/${PROG} clean test tags report
 
 all: ${srcDir}/${PROG}
 
@@ -22,7 +26,7 @@ test: ${testDir} ${srcDir}/${PROG}
 		report=${reportDir}/golden_$${circuit}.report; \
 		goldenLog=${testDir}/golden_$${circuit}.log; \
 		log=${testDir}/$${circuit}.log; \
-		./${binDir}/${goldenProg} -fsim $${report} $${circuitFull} >& $${goldenLog}; \
+		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} >& $${goldenLog}; \
 		./${srcDir}/${PROG} -fsim $${report} $${circuitFull} >& $${log}; \
 		diff $${goldenLog} $${log} >& /dev/null; \
 		if [ !$$? ]; then \
@@ -35,6 +39,13 @@ ${testDir}:
 
 tags:
 	ctags ${srcDir}/*.{h,cpp}
+
+report: reportCircuits.txt
+	@for circuit in ${reportCircuits}; do \
+		circuitFull=${cktDir}/$${circuit}.ckt; \
+		report=${reportDir}/golden_$${circuit}.report; \
+		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} | ./${reportProgram}; \
+	done
 
 clean:
 	rm ${srcDir}/*.o ${srcDir}/${PROG}

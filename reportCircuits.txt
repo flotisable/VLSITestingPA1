@@ -1,0 +1,5 @@
+reportCircuits := \
+  c499 \
+  c1355 \
+  c6288 \
+  c7552
