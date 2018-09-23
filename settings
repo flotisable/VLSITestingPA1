@@ -15,4 +15,5 @@ scriptInstallPath := ~/Downloads
 scriptFiles := \
   reportStatistic.perl \
   settings \
-  makefile
+  makefile \
+  readmeScript.txt
