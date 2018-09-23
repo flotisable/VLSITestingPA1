@@ -1,0 +1,5 @@
+archiveName := r06943085_pa1
+
+archiveFiles := \
+  src \
+  readme

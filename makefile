@@ -12,7 +12,9 @@ reportProgram := reportStatistic.perl
 
 -include reportCircuits.txt
 
-.PHONY: all ${srcDir}/${PROG} clean test tags report
+-include archiveSettings.txt
+
+.PHONY: all ${srcDir}/${PROG} clean test tags report tar
 
 all: ${srcDir}/${PROG}
 
@@ -46,6 +48,13 @@ report: reportCircuits.txt
 		report=${reportDir}/golden_$${circuit}.report; \
 		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} | ./${reportProgram}; \
 	done
+
+tar: archiveSettings.txt
+	if [ ! -d ${archiveName} ]; then \
+		mkdir ${archiveName}; \
+	fi
+	cp -r ${archiveFiles} ${archiveName}
+	tar -czf ${archiveName}.tgz ${archiveName}
 
 clean:
 	rm ${srcDir}/*.o ${srcDir}/${PROG}
