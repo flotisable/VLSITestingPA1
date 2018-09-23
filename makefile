@@ -8,7 +8,7 @@ goldenProg := golden_atpg
 
 circuits := $(patsubst ${cktDir}/%.ckt, %, $(wildcard ${cktDir}/*.ckt) )
 
-.PHONY: all ${srcDir}/${PROG} clean test
+.PHONY: all ${srcDir}/${PROG} clean test tags
 
 all: ${srcDir}/${PROG}
 
@@ -32,6 +32,9 @@ test: ${testDir} ${srcDir}/${PROG}
 
 ${testDir}:
 	mkdir $@
+
+tags:
+	ctags ${srcDir}/*.{h,cpp}
 
 clean:
 	rm ${srcDir}/*.o ${srcDir}/${PROG}
