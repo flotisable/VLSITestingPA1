@@ -2,6 +2,5 @@
 *.o
 doc/PODEM_Goel_TC81.pdf
 doc/summary\ of\ modification.pdf
-reports
 src/atpg
 *tags
