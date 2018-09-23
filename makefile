@@ -10,11 +10,9 @@ circuits := $(patsubst ${cktDir}/%.ckt, %, $(wildcard ${cktDir}/*.ckt) )
 
 reportProgram := reportStatistic.perl
 
--include reportCircuits.txt
+include settings
 
--include archiveSettings.txt
-
-.PHONY: all ${srcDir}/${PROG} clean test tags report tar
+.PHONY: all ${srcDir}/${PROG} clean test tags report tar scripts installScripts
 
 all: ${srcDir}/${PROG}
 
@@ -42,19 +40,29 @@ ${testDir}:
 tags:
 	ctags ${srcDir}/*.{h,cpp}
 
-report: reportCircuits.txt
+report: settings
 	@for circuit in ${reportCircuits}; do \
 		circuitFull=${cktDir}/$${circuit}.ckt; \
 		report=${reportDir}/golden_$${circuit}.report; \
 		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} | ./${reportProgram}; \
 	done
 
-tar: archiveSettings.txt
-	if [ ! -d ${archiveName} ]; then \
+tar: settings
+	@if [ ! -d ${archiveName} ]; then \
 		mkdir ${archiveName}; \
 	fi
 	cp -r ${archiveFiles} ${archiveName}
 	tar -czf ${archiveName}.tgz ${archiveName}
+
+scripts: settings
+	@if [ ! -d $@ ]; then \
+		mkdir $@; \
+	fi
+	cp ${scriptFiles} $@
+	tar -czf $@.tgz $@
+
+installScripts: settings
+	cp ${scriptFiles} ${scriptInstallPath}
 
 clean:
 	rm ${srcDir}/*.o ${srcDir}/${PROG}

@@ -1,0 +1,18 @@
+archiveName := r06943085_pa1
+
+archiveFiles := \
+  src \
+  readme
+
+reportCircuits := \
+  c499 \
+  c1355 \
+  c6288 \
+  c7552
+
+scriptInstallPath := ~/Downloads
+
+scriptFiles := \
+  reportStatistic.perl \
+  settings \
+  makefile
