@@ -44,7 +44,7 @@ report: settings
 	@for circuit in ${reportCircuits}; do \
 		circuitFull=${cktDir}/$${circuit}.ckt; \
 		report=${reportDir}/golden_$${circuit}.report; \
-		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} | ./${reportProgram}; \
+		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} |& ./${reportProgram}; \
 	done
 
 tar: settings
