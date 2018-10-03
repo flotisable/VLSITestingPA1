@@ -6,7 +6,6 @@
 /**********************************************************************/
 
 #include <queue>
-#include <algorithm>
 
 #include "atpg.h"
 #include "logic_tbl.h"
@@ -36,22 +35,12 @@ void ATPG::sim(void) {
   //---------------------------------------- hole ---------------------------------------------
   //-------------------------------------------------------------------------------------------
   /*TODO1*/
-  auto compare =  []( const nptr front, const nptr back )
-                  {
-                    auto compare =  []( const wptr front, const wptr back )
-                                    {
-                                      return ( front->level < back->level );
-                                    };
-                    auto itFront  = max_element( front->iwire.begin(), front->iwire.end(), compare );
-                    auto itBack   = max_element( front->iwire.begin(), front->iwire.end(), compare );
-
-                    return ( ( *itFront )->level > ( *itBack )->level );
-                  };
-  std::priority_queue<nptr,std::vector<nptr>,decltype( compare )> gateQueue( compare );
+  std::queue<nptr> gates;
 
   for( wptr input : cktin )
      for( nptr gate : input->onode )
-        gateQueue.push( gate );
+        gates.push( gate );
+
   /*TODO2*/
   //Hint:
   /* evaluate every scheduled gate & propagate any changes
