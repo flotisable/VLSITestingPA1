@@ -35,11 +35,9 @@ void ATPG::sim(void) {
   //---------------------------------------- hole ---------------------------------------------
   //-------------------------------------------------------------------------------------------
   /*TODO1*/
-  std::queue<nptr> gates;
-
   for( wptr input : cktin )
      for( nptr gate : input->onode )
-        gates.push( gate );
+        gate->flag |= SCHEDULED; // schedule the gate
 
   /*TODO2*/
   //Hint:
@@ -48,7 +46,26 @@ void ATPG::sim(void) {
    * Because the wires are sorted according to their levels,
    * it is correct to evaluate the wires in increasing order. */
   //---------------------------------------- hole ---------------------------------------------
-      
+  for( wptr wire : sort_wlist )
+  {
+     nptr gate = wire->inode[0];
+
+     if( gate->flag & SCHEDULED ) // check if the gate is scheduled
+     {
+       evaluate( gate );
+       gate->flag &= ~SCHEDULED; // remove the schedule of the gate
+     }
+
+     if( wire->flag & CHANGED ) // check if the wire is changed
+     {
+       // schedule the gates
+       for( nptr gate : wire->onode )
+          gate->flag |= SCHEDULED;
+       // end schedule the gates
+
+       wire->flag &= ~CHANGED; // remove the changed flag of the wire
+     }
+  }
   //-------------------------------------------------------------------------------------------
   /*TODO2*/
 
