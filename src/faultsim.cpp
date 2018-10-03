@@ -409,7 +409,12 @@ void ATPG::inject_fault_value(const wptr faulty_wire, const int& bit_position, c
   /*TODO*/
   //Hint use mask to inject fault to the right position
     //---------------------------------------- hole ---------------------------------------------
-      
+  switch( fault_type )
+  {
+    case STUCK0:  faulty_wire->wire_value2 &= ~Mask[bit_position];  break;
+    case STUCK1:  faulty_wire->wire_value2 |= Mask[bit_position];   break;
+    default:      break;
+  }
     //-------------------------------------------------------------------------------------------
   /*TODO*/
 }/* end of inject_fault_value */
