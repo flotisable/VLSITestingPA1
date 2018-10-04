@@ -207,7 +207,7 @@ void ATPG::fault_sim_a_vector(const string& vec, int& num_of_current_detect) {
         /*TODO*/
         //Hint:Use mask to get the value of faulty wire and check every fault in packet
     //---------------------------------------- hole ---------------------------------------------
-        if( w->onode.empty() )
+        if( w->flag & OUTPUT )
         {
           for( int i = 0 ; i < num_of_pattern ; ++i )
           {
