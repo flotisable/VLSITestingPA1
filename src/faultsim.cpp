@@ -207,7 +207,17 @@ void ATPG::fault_sim_a_vector(const string& vec, int& num_of_current_detect) {
         /*TODO*/
         //Hint:Use mask to get the value of faulty wire and check every fault in packet
     //---------------------------------------- hole ---------------------------------------------
-      
+        if( w->onode.empty() )
+        {
+          for( int i = 0 ; i < num_of_pattern ; ++i )
+          {
+             if( !( ( w->wire_value1 ^ Unknown[i]     ) & Mask[i] ) ) continue;
+             if( !( ( w->wire_value1 ^ w->wire_value2 ) & Mask[i] ) ) continue;
+
+             simulated_fault_list[i]->detect = TRUE;
+          }
+        }
+        w->wire_value2 = w->wire_value1;
     //-------------------------------------------------------------------------------------------
         /*TODO*/
 	    } // pop out all faulty wires
