@@ -40,7 +40,6 @@ void ATPG::fault_sim_a_vector(const string& vec, int& num_of_current_detect) {
   int i,start_wire_index, nckt;
   int num_of_fault;
   
-  
   num_of_fault = 0; // counts the number of faults in a packet
 
   /* num_of_current_detect is used to keep track of the number of undetected
@@ -209,7 +208,7 @@ void ATPG::fault_sim_a_vector(const string& vec, int& num_of_current_detect) {
     //---------------------------------------- hole ---------------------------------------------
         if( w->flag & OUTPUT ) // check if the wire is PO
         {
-          for( int i = 0 ; i < num_of_pattern ; ++i )
+          for( int i = 0 ; i < num_of_fault ; ++i )
           {
              if( !( ( w->wire_value1 ^ Unknown[i]     ) & Mask[i] ) ) continue; // check if the value is unknown
              if( !( ( w->wire_value1 ^ w->wire_value2 ) & Mask[i] ) ) continue; // check if the value if different
@@ -419,6 +418,8 @@ void ATPG::inject_fault_value(const wptr faulty_wire, const int& bit_position, c
   /*TODO*/
   //Hint use mask to inject fault to the right position
     //---------------------------------------- hole ---------------------------------------------
+  faulty_wire->fault_flag |= Mask[bit_position];
+
   switch( fault_type )
   {
     case STUCK0:  faulty_wire->wire_value2 &= ~Mask[bit_position];  break;
