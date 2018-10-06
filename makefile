@@ -28,7 +28,7 @@ test: ${testDir} ${srcDir}/${PROG}
 		log=${testDir}/$${circuit}.log; \
 		./${binDir}/${goldenProgram} -fsim $${report} $${circuitFull} >& $${goldenLog}; \
 		./${srcDir}/${PROG} -fsim $${report} $${circuitFull} >& $${log}; \
-		diff $${goldenLog} $${log} >& /dev/null; \
+		diff -y --suppress-common-lines $${goldenLog} $${log}; \
 		if [ !$$? ]; then \
 			echo "$${circuit} is not the same as golden result!"; \
 		fi \
