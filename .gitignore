@@ -9,3 +9,5 @@ Test
 *scripts*
 *.uf
 *.vim
+report.pdf
+*.tex
