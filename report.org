@@ -1,0 +1,34 @@
+#+TITLE: VLSI Testing PA1 Report
+#+AUTHOR: r06943085 黃韋智
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \usepackage{CJKutf8}
+#+LATEX_HEADER: \AtBeginDocument{ \begin{CJK}{UTF8}{bkai} }
+#+LATEX_HEADER: \AtEndDocument{ \end{CJK} }
+
+* 表格 
+  |   | circuit | number of   | number of | number of    | number of       | number of         | fault    |
+  |   | number  | test vector | gates     | total faults | detected faults | undetected faults | coverage |
+  | / | <l>     | <l>         | <l>       | <l>          | <l>             | <l>               | <l>      |
+  | / | >       | <           |           |              |                 |                   |          |
+  |---+---------+-------------+-----------+--------------+-----------------+-------------------+----------|
+  |   | c499    | 66          | 554       | 2390         | 2263            | 127               | 94.69%   |
+  |   | c1355   | 63          | 554       | 2726         | 1702            | 1024              | 62.44%   |
+  |   | c6288   | 42          | 4800      | 17376        | 17109           | 267               | 98.46%   |
+  |   | c7552   | 289         | 5679      | 19456        | 19144           | 312               | 98.40%   |
+* 程式碼
+** sim.cpp
+   - 將所有 PI 所連接到的 gate 都做 schedule。
+     #+INCLUDE: "./src/sim.cpp" src C++ :lines "36-43" -n 36
+   - 將所有 schedule 的 gate 做 evaluation，並在 gate output 改變時 schedule 輸出所連接到的 gate
+     #+INCLUDE: "./src/sim.cpp" src C++ :lines "53-74" -n 53
+** faultsim.cpp
+   - 確認整個電路的 output faulty 跟 fault-free 的值是不是不一樣，如果不一樣就表示偵測到 fault
+     #+INCLUDE: "./src/faultsim.cpp" src C++ :lines "209-219" -n 209
+     - 如果是 wire 值是 unknown 就不理它
+       #+INCLUDE: "./src/faultsim.cpp" src C++ :lines "213-214" -n 213
+     - 如果 faulty 跟 fault-free 值一樣就不理它
+       #+INCLUDE: "./src/faultsim.cpp" src C++ :lines "214-215" -n 214
+   - 將 faulty 的值 reset 成 fault-free 的值，讓下一輪 fault injection 跟 fault simulation 正常運作
+     #+INCLUDE: "./src/faultsim.cpp" src C++ :lines "219-220" -n 219
+* Bonus
+  沒做
